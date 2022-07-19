@@ -1,0 +1,32 @@
+apiVersion: skaffold/v2beta28
+kind: Config
+metadata:
+  name: gosample
+build:
+  artifacts:
+  - image: gcr.io/google-samples/hello-app:1.0
+    context: service0
+    sync:
+      manual:
+        - src: "service0/**/*.go"
+          dest: "."
+    docker:
+      dockerfile: Dockerfile
+  - image: gcr.io/google-samples/hello-app:2.0
+    context: service1
+    sync:
+      manual:
+        - src: "service1/**/*.go"
+          dest: "."
+    docker:
+      dockerfile: Dockerfile
+  local:
+    push: false
+deploy:
+  kubectl:
+    manifests:
+    - k8s/ingress.yaml
+    - k8s/namespace.yaml
+    - k8s/secrets.yaml
+    - k8s/service0-deployment.yaml
+    - k8s/service1-deployment.yaml

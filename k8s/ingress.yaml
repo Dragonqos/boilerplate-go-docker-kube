@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gosample-ingress
+  namespace: gosample
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: service0-service
+                port:
+                  number: 8080
+          - path: /api/service1
+            pathType: Prefix
+            backend:
+              service:
+                name: service1-service
+                port:
+                  number: 8081

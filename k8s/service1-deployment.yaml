@@ -1,0 +1,46 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service1-service
+  namespace: gosample
+spec:
+  type: NodePort
+  selector:
+    application: service1-service
+  ports:
+    - port: 8081
+      nodePort: 30001
+      protocol: TCP
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service1-service
+  namespace: gosample
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      application: service1-service
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        application: service1-service
+    spec:
+      containers:
+        - name: service1-service
+          image: dragonqos/service1
+          ports:
+            - containerPort: 8081
+              protocol: TCP
+              name: http
+          env:
+            - { name: APP_PORT, value: ":8081" }
+            - { name: APP_LOG_LEVEL, valueFrom: { secretKeyRef: { name: app-secrets, key: APP_LOG_LEVEL } } }
