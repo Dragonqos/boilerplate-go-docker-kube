@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -14,7 +15,7 @@ func main() {
 	r := mux.NewRouter()
 
 	r.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
-		json.NewEncoder(writer).Encode(map[string]interface{}{"ok": true, "name": "service 0"})
+		json.NewEncoder(writer).Encode(map[string]interface{}{"ok": true, "name": "service main is running ok"})
 	})
 
 	srv := &http.Server{
@@ -25,5 +26,6 @@ func main() {
 		ReadTimeout:  15 * time.Second,
 	}
 
+	fmt.Printf("Listening on port %v", os.Getenv("APP_PORT"))
 	log.Fatal(srv.ListenAndServe())
 }

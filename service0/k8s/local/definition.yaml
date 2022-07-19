@@ -2,28 +2,28 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: service1-service
-  namespace: gosample
+    name: service0-service
+    namespace: gosample-local
 spec:
-  type: NodePort
-  selector:
-    application: service1-service
-  ports:
-    - port: 8081
-      nodePort: 30001
-      protocol: TCP
+    type: ClusterIP
+    selector:
+      application: service0-service
+    ports:
+      - port: 8080
+        protocol: TCP
+
 
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: service1-service
-  namespace: gosample
+  name: service0-service
+  namespace: gosample-local
 spec:
   replicas: 1
   selector:
     matchLabels:
-      application: service1-service
+      application: service0-service
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -32,15 +32,15 @@ spec:
   template:
     metadata:
       labels:
-        application: service1-service
+        application: service0-service
     spec:
       containers:
-        - name: service1-service
-          image: dragonqos/service1
+        - name: service0-service
+          image: dragonqos/service0
           ports:
-            - containerPort: 8081
+            - containerPort: 8080
               protocol: TCP
               name: http
           env:
-            - { name: APP_PORT, value: ":8081" }
+            - { name: APP_PORT, value: ":8080" }
             - { name: APP_LOG_LEVEL, valueFrom: { secretKeyRef: { name: app-secrets, key: APP_LOG_LEVEL } } }

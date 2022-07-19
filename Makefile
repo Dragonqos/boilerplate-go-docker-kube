@@ -3,7 +3,7 @@ APP_NAME    		 := gosample
 SERVICE0_DOCKER_REPO := dragonqos/service0
 SERVICE1_DOCKER_REPO := dragonqos/service1
 SHELL      			 := /bin/bash
-NOW         		 := $(shell date +'%Y.%m.%d')
+NOW         		 := $(shell date +'%Y.%m.%d-%H.%M.%S')
 
 login: ## Login to docker hub
 	docker login

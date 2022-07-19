@@ -1,0 +1,20 @@
+---
+apiVersion: skaffold/v2beta28
+kind: Config
+profiles:
+  - name: local
+    activation:
+      - kubeContext: minikube
+    deploy:
+#      statusCheck: false
+      kubeContext: minikube
+      kubectl:
+        defaultNamespace: gosample-local
+        manifests:
+          - local/namespace.yaml
+          - local/secrets.yaml
+          - local/ingress.yaml
+    build:
+      local:
+        push: false
+        concurrency: 1

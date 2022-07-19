@@ -14,7 +14,7 @@ func main() {
 	r := mux.NewRouter()
 
 	r.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
-		json.NewEncoder(writer).Encode(map[string]interface{}{"ok": true, "name": "service 1"})
+		json.NewEncoder(writer).Encode(map[string]interface{}{"ok": true, "name": "service 1 also running"})
 	})
 
 	srv := &http.Server{
